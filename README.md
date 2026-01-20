@@ -147,9 +147,9 @@ Place a shared library of `libzmq` next to your executable (for example place `l
 
 #### MacOS
 1. Before running any command set the correct target platform `export MACOSX_DEPLOYMENT_TARGET=11.0`
-2. Run configure with libsodium option `./configure --with-libsodium`
+2. Run configure with libsodium option `./configure --with-libsodium --enable-drafts`
 3. Run make `make`
-4. Copy `libzmq.a` to the corresponding folder for `arm64` or `x86_64` under `macos/Classes/Frameworks`
+4. Copy `libzmq.a` (usually found at `src/.libs/libzmq.a`) to the corresponding folder for `arm64` or `x86_64` under `macos/Classes/Frameworks`
 
 <!-- ## Additional information
 Tell users more about the package: where to find more information, how to 

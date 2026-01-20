@@ -143,15 +143,6 @@ const int ENOCOMPATPROTO = ZMQ_HAUSNUMERO + 52;
 const int ETERM = ZMQ_HAUSNUMERO + 53;
 const int EMTHREAD = ZMQ_HAUSNUMERO + 54;
 
-// errno
-const int EINTR = 4;
-const int EBADF = 9;
-const int EAGAIN = 11;
-const int EACCES = 13;
-const int EFAULT = 14;
-const int EINVAL = 22;
-const int EMFILE = 24;
-
 // Socket events
 const int ZMQ_EVENT_CONNECTED = 0x0001;
 const int ZMQ_EVENT_CONNECT_DELAYED = 0x0002;
@@ -166,14 +157,169 @@ const int ZMQ_EVENT_DISCONNECTED = 0x0200;
 const int ZMQ_EVENT_MONITOR_STOPPED = 0x0400;
 const int ZMQ_EVENT_ALL = 0xFFFF;
 
-/*  Unspecified system errors during handshake. Event value is an errno.      */
+/// Unspecified system errors during handshake. Event value is an errno.
 const int ZMQ_EVENT_HANDSHAKE_FAILED_NO_DETAIL = 0x0800;
-/*  Handshake complete successfully with successful authentication (if        *
- *  enabled). Event value is unused.                                          */
+
+/// Handshake complete successfully with successful authentication (if
+/// enabled). Event value is unused.
 const int ZMQ_EVENT_HANDSHAKE_SUCCEEDED = 0x1000;
-/*  Protocol errors between ZMTP peers or between server and ZAP handler.     *
- *  Event value is one of ZMQ_PROTOCOL_ERROR_*                                */
+
+/// Protocol errors between ZMTP peers or between server and ZAP handler.
+/// Event value is one of ZMQ_PROTOCOL_ERROR_*
 const int ZMQ_EVENT_HANDSHAKE_FAILED_PROTOCOL = 0x2000;
-/*  Failed authentication requests. Event value is the numeric ZAP status     *
- *  code, i.e. 300, 400 or 500.                                               */
+
+/// Failed authentication requests. Event value is the numeric ZAP status
+/// code, i.e. 300, 400 or 500.
 const int ZMQ_EVENT_HANDSHAKE_FAILED_AUTH = 0x4000;
+
+/// The contract that all platforms must adhere to.
+abstract class PlatformConstants {
+  int get EAGAIN;
+  int get EADDRINUSE;
+  int get ECONNREFUSED;
+  int get EINTR;
+  int get EINVAL;
+  int get EACCES;
+  int get EFAULT;
+  int get EBADF;
+  int get EMFILE;
+  int get EHOSTUNREACH;
+  int get ENETDOWN;
+  int get ENETUNREACH;
+  int get ENETRESET;
+  int get ECONNABORTED;
+  int get ECONNRESET;
+  int get ETIMEDOUT;
+  int get ENOTCONN;
+}
+
+/// Linux and Android (Standard Linux Kernel definitions)
+class _LinuxConstants implements PlatformConstants {
+  @override
+  final int EAGAIN = 11;
+  @override
+  final int EADDRINUSE = 98;
+  @override
+  final int ECONNREFUSED = 111;
+  @override
+  final int EINTR = 4;
+  @override
+  final int EINVAL = 22;
+  @override
+  final int EACCES = 13;
+  @override
+  final int EFAULT = 14;
+  @override
+  final int EBADF = 9;
+  @override
+  final int EMFILE = 24;
+  @override
+  final int EHOSTUNREACH = 113;
+  @override
+  final int ENETDOWN = 100;
+  @override
+  final int ENETUNREACH = 101;
+  @override
+  final int ENETRESET = 102;
+  @override
+  final int ECONNABORTED = 103;
+  @override
+  final int ECONNRESET = 104;
+  @override
+  final int ETIMEDOUT = 110;
+  @override
+  final int ENOTCONN = 107;
+}
+
+/// macOS and iOS (BSD/Darwin definitions)
+class _MacOsConstants implements PlatformConstants {
+  @override
+  final int EAGAIN = 35;
+  @override
+  final int EADDRINUSE = 48;
+  @override
+  final int ECONNREFUSED = 61;
+  @override
+  final int EINTR = 4;
+  @override
+  final int EINVAL = 22;
+  @override
+  final int EACCES = 13;
+  @override
+  final int EFAULT = 14;
+  @override
+  final int EBADF = 9;
+  @override
+  final int EMFILE = 24;
+  @override
+  final int EHOSTUNREACH = 65;
+  @override
+  final int ENETDOWN = 50;
+  @override
+  final int ENETUNREACH = 51;
+  @override
+  final int ENETRESET = 52;
+  @override
+  final int ECONNABORTED = 53;
+  @override
+  final int ECONNRESET = 54;
+  @override
+  final int ETIMEDOUT = 60;
+  @override
+  final int ENOTCONN = 57;
+}
+
+/// The Windows definitions
+class _WindowsConstants implements PlatformConstants {
+  @override
+  final int EAGAIN = 10035; // WSAEWOULDBLOCK
+  @override
+  final int EADDRINUSE = 10048; // WSAEADDRINUSE
+  @override
+  final int ECONNREFUSED = 10061; // WSAECONNREFUSED
+  @override
+  final int EINTR = 10004; // WSAEINTR
+  @override
+  final int EINVAL = 10022; // WSAEINVAL
+  @override
+  final int EACCES = 10013; // WSAEACCES
+  @override
+  final int EFAULT = 10014; // WSAEFAULT
+  @override
+  final int EBADF = 10009; // WSAEBADF
+  @override
+  final int EMFILE = 10024; // WSAEMFILE
+  @override
+  final int EHOSTUNREACH = 10065; // WSAEHOSTUNREACH
+  @override
+  final int ENETDOWN = 10050; // WSAENETDOWN
+  @override
+  final int ENETUNREACH = 10051; // WSAENETUNREACH
+  @override
+  final int ENETRESET = 10052; // WSAENETRESET
+  @override
+  final int ECONNABORTED = 10053; // WSAECONNABORTED
+  @override
+  final int ECONNRESET = 10054; // WSAECONNRESET
+  @override
+  final int ETIMEDOUT = 10060; // WSAETIMEDOUT
+  @override
+  final int ENOTCONN = 10057; // WSAENOTCONN
+}
+
+/// This variable holds the correct definitions for the current runtime.
+/// The check happens only ONCE when this variable is first accessed.
+final PlatformConstants constants = _getConstants();
+
+PlatformConstants _getConstants() {
+  if (Platform.isAndroid || Platform.isLinux) {
+    return _LinuxConstants();
+  }
+  if (Platform.isMacOS || Platform.isIOS) {
+    return _MacOsConstants();
+  }
+  if (Platform.isWindows) {
+    return _WindowsConstants();
+  }
+  throw UnsupportedError('Platform ${Platform.operatingSystem} not supported');
+}

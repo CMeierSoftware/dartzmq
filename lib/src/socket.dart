@@ -115,7 +115,7 @@ class ZBaseSocket {
 
     final result = _bindings.zmq_send(_socket, ptr.cast(), data.length, flags);
     malloc.free(ptr);
-    _checkReturnCode(result, ignore: [EINTR]);
+    _checkReturnCode(result, ignore: [constants.EINTR]);
   }
 
   /// Sends the given [string] over this socket
@@ -205,7 +205,7 @@ class ZBaseSocket {
     final endpointPointer = address.toNativeUtf8();
     final result = _bindings.zmq_bind(_socket, endpointPointer);
     malloc.free(endpointPointer);
-    _checkReturnCode(result, ignore: [EINTR]);
+    _checkReturnCode(result, ignore: [constants.EINTR]);
   }
 
   /// Connects the socket to an endpoint and then accepts incoming connections on that endpoint.
@@ -220,7 +220,7 @@ class ZBaseSocket {
     final endpointPointer = address.toNativeUtf8();
     final result = _bindings.zmq_connect(_socket, endpointPointer);
     malloc.free(endpointPointer);
-    _checkReturnCode(result, ignore: [EINTR]);
+    _checkReturnCode(result, ignore: [constants.EINTR]);
   }
 
   /// Closes the socket and releases underlying resources.
@@ -258,7 +258,7 @@ class ZBaseSocket {
     } else {
       throw ArgumentError('Unsupported type: ${value.runtimeType}');
     }
-    _checkReturnCode(result, ignore: [EINTR]);
+    _checkReturnCode(result, ignore: [constants.EINTR]);
   }
 
   /// Sets the socket's long term secret key.
@@ -420,7 +420,7 @@ class ZSyncSocket extends ZBaseSocket {
       ZMessage zMessage = ZMessage();
       while (true) {
         rc = _bindings.zmq_msg_recv(frame, _socket, flags);
-        if (rc < 0 && _bindings.zmq_errno() == EINTR) {
+        if (rc < 0 && _bindings.zmq_errno() == constants.EINTR) {
           // Retry when the blocking call is interrupted by a signal.
           continue;
         }

@@ -17,15 +17,30 @@ class ZeroMQException implements Exception {
   }
 
   /// Maps error codes to messages
-  static const Map<int, String> _errorMessages = {
+  static Map<int, String> _errorMessages = {
     // errno
-    EINTR: 'EINTR: The operation was interrupted',
-    EBADF: 'EBADF: Bad file descriptor',
-    EAGAIN: 'EAGAIN', // denpendant on what function has been called before
-    EACCES: 'EACCES: Permission denied',
-    EFAULT: 'EFAULT', // denpendant on what function has been called before
-    EINVAL: 'EINVAL', // denpendant on what function has been called before
-    EMFILE: 'EMFILE', // denpendant on what function has been called before
+    constants.EAGAIN:
+        'EAGAIN', // denpendant on what function has been called before
+    constants.EADDRINUSE: 'EADDRINUSE: Address already in use',
+    constants.ECONNREFUSED: 'ECONNREFUSED: Connection refused',
+    constants.EINTR: 'EINTR: The operation was interrupted',
+    constants.EINVAL:
+        'EINVAL', // denpendant on what function has been called before
+    constants.EACCES: 'EACCES: ',
+    constants.EFAULT:
+        'EFAULT', // denpendant on what function has been called before
+    constants.EBADF: 'EBADF: Bad file descriptor',
+    constants.EMFILE:
+        'EMFILE', // denpendant on what function has been called before
+    constants.EHOSTUNREACH: 'EHOSTUNREACH: Host is unreachable',
+    constants.ENETDOWN: 'ENETDOWN: Network is down',
+    constants.ENETUNREACH: 'ENETUNREACH: Network is unreachable',
+    constants.ENETRESET: 'ENETRESET: Network dropped connection on reset',
+    constants.ECONNABORTED: 'ECONNABORTED: Software caused connection abort',
+    constants.ECONNRESET: 'ECONNRESET: Connection reset by peer',
+    constants.ETIMEDOUT: 'ETIMEDOUT: Connection timed out',
+    constants.ENOTCONN: 'ENOTCONN: Transport endpoint is not connected',
+    constants.EACCES: 'EACCES: Permission denied',
 
     // 0MQ errors
     ENOTSUP: 'Not supported',

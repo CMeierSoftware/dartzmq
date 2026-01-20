@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:developer';
 import 'dart:ffi';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
@@ -106,7 +107,7 @@ class ZContext {
           }
         }
 
-        _checkReturnCode(rc, ignore: [EAGAIN, EINTR]);
+        _checkReturnCode(rc, ignore: [constants.EAGAIN, constants.EINTR]);
       }
 
       rc = _bindings.zmq_msg_close(frame); // rc == 0
